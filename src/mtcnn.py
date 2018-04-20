@@ -82,7 +82,7 @@ def load_net(sess, inputs, outputs, export_path):
 
 with tf.Graph().as_default():
   
-    sess = tf.Session()
+    sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
     with sess.as_default():
         with tf.variable_scope('pnet'):
             data = tf.placeholder(tf.float32, (None,None,None,3), 'input')
@@ -116,7 +116,7 @@ minsize = 20 # minimum size of face
 threshold = [ 0.6, 0.7, 0.7 ]  # three steps's threshold
 factor = 0.709 # scale factor
 
-source_path = '/Users/minqijiang/Desktop/test2.jpg'
+source_path = '/Users/minqijiang/Desktop/test13.jpg'
 img = misc.imread(source_path)
 
 bounding_boxes, points = align.detect_face.detect_face(img, minsize, pnet_fun, rnet_fun, onet_fun, threshold, factor)

@@ -299,6 +299,8 @@ def create_mtcnn(sess, model_path):
     return pnet_fun, rnet_fun, onet_fun
 
 def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
+    from timeit import default_timer as timer
+    start = timer()
     """Detects faces in an image, and returns bounding boxes and points for them.
     img: input image
     minsize: minimum faces' size
@@ -321,7 +323,7 @@ def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
         minl = minl*factor
         factor_count += 1
 
-    # first stage
+    # first stagee
     for scale in scales:
         hs=int(np.ceil(h*scale))
         ws=int(np.ceil(w*scale))
@@ -329,7 +331,6 @@ def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
         im_data = (im_data-127.5)*0.0078125
         img_x = np.expand_dims(im_data, 0)
         img_y = np.transpose(img_x, (0,2,1,3))
-        import pdb; pdb.set_trace()
         out = pnet(img_y)
         out0 = np.transpose(out[0], (0,2,1,3))
         out1 = np.transpose(out[1], (0,2,1,3))
@@ -419,6 +420,8 @@ def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
             total_boxes = total_boxes[pick,:]
             points = points[:,pick]
                 
+    end = timer()
+    print(end - start)
     return total_boxes, points
 
 
